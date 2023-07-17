@@ -4,25 +4,23 @@ import model.familyTree.FamilyTree;
 import model.human.Human;
 import model.save.base.FileHandler;
 
-public class FileHandlerForFamilyTree implements WritableForFamilyTree{
+import java.io.Serializable;
+
+public class FileHandlerForFamilyTree extends FileHandler implements Writable{
     private String filePath = "tree.out";
-    private FileHandler fileHandler;
 
-    public FileHandlerForFamilyTree() {
-        fileHandler = new FileHandler();
-    }
-
+    @Override
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
     @Override
     public boolean save(FamilyTree<Human> tree) {
-        return fileHandler.save(tree, filePath);
+        return super.save(tree, filePath);
     }
 
     @Override
     public FamilyTree<Human> read() {
-        return (FamilyTree<Human>)fileHandler.read(filePath);
+        return (FamilyTree<Human>)super.read(filePath);
     }
 }

@@ -15,7 +15,8 @@ public class Human implements Serializable, TreeNode<Human> {
     private Gender gender;
     private LocalDate birthDate;
     private LocalDate deathDate;
-    private List<Human> parents;
+    private Human mother;
+    private Human father;
     private List<Human> children;
     private Human spouse;
 
@@ -26,13 +27,8 @@ public class Human implements Serializable, TreeNode<Human> {
         this.gender = gender;
         this.birthDate = birthDate;
         this.deathDate = deathDate;
-        parents = new ArrayList<>();
-        if (father != null){
-            parents.add(father);
-        }
-        if (mother != null){
-            parents.add(mother);
-        }
+        this.father = father;
+        this.mother = mother;
         children = new ArrayList<>();
     }
 
@@ -54,29 +50,41 @@ public class Human implements Serializable, TreeNode<Human> {
     }
 
     public boolean addParent(Human parent){
-        if (!parents.contains(parent)){
-            parents.add(parent);
-            return true;
+        if (parent.getGender().equals(Gender.Male)){
+            setFather(parent);
+        } else if (parent.getGender().equals(Gender.Female)) {
+            setMother(parent);
         }
-        return false;
+        return true;
     }
 
-    public Human getFather() {
-        for (Human parent: parents){
-            if (parent.getGender() == Gender.Male){
-                return parent;
-            }
-        }
-        return null;
+    public void setMother(Human mother) {
+        this.mother = mother;
     }
 
+    public void setFather(Human father) {
+        this.father = father;
+    }
+
+    @Override
     public Human getMother() {
-        for (Human parent: parents){
-            if (parent.getGender() == Gender.Female){
-                return parent;
-            }
+        return mother;
+    }
+
+    @Override
+    public Human getFather() {
+        return father;
+    }
+
+    public List<Human> getParents(){
+        List<Human> list = new ArrayList<>(2);
+        if (father != null){
+            list.add(father);
         }
-        return null;
+        if (mother != null){
+            list.add(mother);
+        }
+        return list;
     }
 
     public int getAge(){
@@ -118,10 +126,6 @@ public class Human implements Serializable, TreeNode<Human> {
 
     public LocalDate getDeathDate() {
         return deathDate;
-    }
-
-    public List<Human> getParents() {
-        return parents;
     }
 
     public List<Human> getChildren() {

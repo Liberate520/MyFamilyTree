@@ -38,6 +38,7 @@ public class FamilyTreeService {
                            long idFather, long idMother){
         Human father = activeTree.getById(idFather);
         Human mother = activeTree.getById(idMother);
+
         Gender gender = Gender.valueOf(genderString);
         LocalDate humanBirthDate = LocalDate.parse(birthDate);
         Human human = new Human(name, gender, humanBirthDate, father, mother);

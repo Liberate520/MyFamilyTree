@@ -75,28 +75,38 @@ public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable
         if (checkId(humanId1) && checkId(humanId2)){
             E human1 = getById(humanId1);
             E human2 = getById(humanId2);
-            if (human1.getSpouse() == null && human2.getSpouse() == null){
-                human1.setSpouse(human2);
-                human2.setSpouse(human1);
-            } else {
-                return false;
-            }
+            return setWedding(human1, human2);
         }
         return false;
+    }
+
+    public boolean setWedding(E human1, E human2){
+        if (human1.getSpouse() == null && human2.getSpouse() == null){
+            human1.setSpouse(human2);
+            human2.setSpouse(human1);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean setDivorce(long humanId1, long humanId2){
         if (checkId(humanId1) && checkId(humanId2)){
             E human1 = getById(humanId1);
             E human2 = getById(humanId2);
-            if (human1.getSpouse() != null && human2.getSpouse() != null){
-                human1.setSpouse(null);
-                human2.setSpouse(null);
-            } else {
-                return false;
-            }
+            return setDivorce(human1, human2);
         }
         return false;
+    }
+
+    public boolean setDivorce(E human1, E human2){
+        if (human1.getSpouse() != null && human2.getSpouse() != null){
+            human1.setSpouse(null);
+            human2.setSpouse(null);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean remove(long humansId){
@@ -107,16 +117,8 @@ public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable
         return false;
     }
 
-    private boolean checkId(long id){
-        if (id >= humansId || id < 0){
-            return false;
-        }
-        for (E human: humanList){
-            if (human.getId() == id){
-                return true;
-            }
-        }
-        return false;
+    private boolean checkId(long id) {
+        return id < humansId && id >= 0;
     }
 
     public E getById(long id){
@@ -150,7 +152,7 @@ public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable
     }
 
     public void sortByDeathDate(){
-        humanList.sort(new FamilyTreeComparatorByDeathDate<>());
+        humanList.sort(new FamilyTreeComparatorByBirthDate<>());
     }
 
     @Override

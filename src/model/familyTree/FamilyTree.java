@@ -1,12 +1,13 @@
 package model.familyTree;
 
+import model.human.Human;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable<E> {
-    private long humansId;
     private List<E> humanList;
 
     public FamilyTree() {
@@ -23,7 +24,6 @@ public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable
         }
         if (!humanList.contains(human)){
             humanList.add(human);
-            human.setId(humansId++);
 
             addToParents(human);
             addToChildren(human);
@@ -118,7 +118,7 @@ public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable
     }
 
     private boolean checkId(long id) {
-        return id < humansId && id >= 0;
+        return id < humanList.size() && id >= 0;
     }
 
     public E getById(long id){
@@ -147,12 +147,12 @@ public class FamilyTree<E extends TreeNode<E>> implements Serializable, Iterable
         return sb.toString();
     }
 
-    public void sortByName(){
-        humanList.sort(new FamilyTreeComparatorByName<>());
+    public List<E> sortByName(){
+        return humanList.stream().sorted().toList();
     }
 
-    public void sortByDeathDate(){
-        humanList.sort(new FamilyTreeComparatorByBirthDate<>());
+    public List<E> sortByBirthDate(){
+        return humanList.stream().sorted(new FamilyTreeComparatorByBirthDate<>()).toList();
     }
 
     @Override

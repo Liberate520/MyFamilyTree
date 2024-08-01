@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-public interface TreeNode<T> extends Serializable {
+public interface TreeNode<T> extends Serializable, Comparable<T> {
     void setId(long id);
     long getId();
     T getFather();

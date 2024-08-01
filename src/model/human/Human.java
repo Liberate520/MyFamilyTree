@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Human implements Serializable, TreeNode<Human> {
+public class Human implements TreeNode<Human> {
     private long id;
     private String name;
     private Gender gender;
@@ -41,6 +41,10 @@ public class Human implements Serializable, TreeNode<Human> {
         this(name, gender, birthDate, null, father, mother);
     }
 
+    public Human(){
+        children = new ArrayList<>();
+    }
+
     public boolean addChild(Human child){
         if (!children.contains(child)){
             children.add(child);
@@ -50,12 +54,28 @@ public class Human implements Serializable, TreeNode<Human> {
     }
 
     public boolean addParent(Human parent){
-        if (parent.getGender().equals(Gender.Male)){
+        if (parent.getGender().equals(Gender.MALE)){
             setFather(parent);
-        } else if (parent.getGender().equals(Gender.Female)) {
+        } else if (parent.getGender().equals(Gender.FEMALE)) {
             setMother(parent);
         }
         return true;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setParent(Human parent){
+        if (parent.gender.equals(Gender.FEMALE)){
+            setMother(parent);
+        } else if (parent.gender.equals(Gender.MALE)){
+            setFather(parent);
+        }
     }
 
     public void setMother(Human mother) {
@@ -215,6 +235,11 @@ public class Human implements Serializable, TreeNode<Human> {
             res.append("отсутствуют");
         }
         return res.toString();
+    }
+
+    @Override
+    public int compareTo(Human o) {
+        return name.compareTo(o.name);
     }
 
     @Override
